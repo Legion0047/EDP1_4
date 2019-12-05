@@ -6,24 +6,40 @@ import java.util.Arrays;
 public class Aufgabe3 {
 
     private static int getMaxPairSum(int[] workArray, int start, int end) {
-        // TODO: Implementieren Sie hier Ihre Lösung für die Methode
-        return -1; //Zeile kann geändert oder entfernt werden.
+        int thisPairSum = workArray[start]+workArray[start +1];
+        if (end-start==1) return thisPairSum;
+        int nextPairSum = getMaxPairSum(workArray,start+1,end);
+        if (thisPairSum>nextPairSum) return thisPairSum;
+        else return nextPairSum;
     }
 
     private static int countValuesWithSmallerNeighbors(int[] workArray, int index) {
-        // TODO: Implementieren Sie hier Ihre Lösung für die Methode
-        return -1; //Zeile kann geändert oder entfernt werden.
+        if (index==workArray.length-2) {
+            if (workArray[index] > workArray[index + 1] && workArray[index] > workArray[index - 1]) return 1;
+        }
+        if (workArray[index] > workArray[index + 1] && workArray[index] > workArray[index - 1]) return 1+countValuesWithSmallerNeighbors(workArray,index+1);
+        return countValuesWithSmallerNeighbors(workArray,index+1);
     }
 
 
     private static int[] getArrayWithNegativeValues(int[] workArray, int index) {
-        // TODO: Implementieren Sie hier Ihre Lösung für die Methode
-        return null; //Zeile kann geändert oder entfernt werden.
+        int[] thisArray=workArray.clone();
+        if (thisArray[index]>0) thisArray[index]=0;
+        if (index==thisArray.length-1) return thisArray;
+        return getArrayWithNegativeValues(thisArray,index+1);
     }
 
     private static boolean containsValue(int[] workArray, int value) {
-        // TODO: Implementieren Sie hier Ihre Lösung für die Methode
-        return false; //Zeile kann geändert oder entfernt werden.
+        int[] firstHalf = Arrays.copyOfRange(workArray, 0, workArray.length/2);
+        int[] secondHalf = Arrays.copyOfRange(workArray, workArray.length/2, workArray.length);
+        if (workArray.length==1){
+            if (workArray[0]==value)return true;
+            else return false;
+        }
+        boolean firstValue = containsValue(firstHalf,value);
+        boolean secondValue = containsValue(secondHalf,value);
+        if (firstValue==true||secondValue==true) return true;
+        return false;
     }
     
     public static void main(String[] args) {
@@ -85,3 +101,7 @@ public class Aufgabe3 {
 }
 
 
+/*
+1. Wie könnte containsValue(...) optimiert werden, wenn die Vorbedingung ist, dass workArray aufsteigend sortiert ist?
+Rekursive implementierung einer binären Suche, sprich immer nur eine rekursion starten je nach dem ob der value größer oder kleiner ist als das mittlere element des arrays.
+ */
